@@ -130,8 +130,48 @@ Links to official HAR and HRS documents are available in the **Laws** tab of eac
 
 - **Leaflet.js** — map rendering and polygon interaction
 - **ArcGIS Online** — hosted feature service for area geometries and attributes
-- **Vanilla JS / CSS** — no frontend framework; single-file architecture
+- **Vanilla JS / CSS** — no frontend framework, no build step; plain ES modules
 - **Esri World Imagery** — satellite basemap with reference labels overlay
+
+### Code layout
+
+The app code lives in small modules under `js/` — `main.js` is the entry point
+and the only script `index.html` loads. Each file owns one concern:
+
+| File | What it does |
+| --- | --- |
+| `js/main.js` | Entry point — wires all event listeners, boots the app |
+| `js/config.js` | Constants and data schema — edit here when the ArcGIS fields change |
+| `js/state.js` | Shared app state (current selection, timers, share payload) |
+| `js/dom.js` | Element lookups for the panel, list, and search box |
+| `js/utils.js` | Pure helpers — escaping, URL validation, Hawaiian text search |
+| `js/map-core.js` | Leaflet map + basemap tile layers |
+| `js/panel.js` | Panel state machine + mobile bottom-sheet drag |
+| `js/geometry.js` | Point-in-polygon tests, overlap counting, panel-aware map fitting |
+| `js/layer-styles.js` | Polygon hover / selection / flash highlighting |
+| `js/selection.js` | Clearing selections, marking the active list item |
+| `js/render.js` | All HTML builders — cards, tabs, rules, combined summary |
+| `js/info-panel.js` | Opening the info panel for areas, overlaps, and About |
+| `js/share.js` | Share links and restoring a shared link on load |
+| `js/sidebar.js` | Island list population, search filtering, zoom-to-area |
+| `js/data.js` | Loading the ArcGIS service and building the map layers |
+
+Because the app uses ES modules, the page must be served over http(s) —
+GitHub Pages works as-is; opening `index.html` directly from disk does not.
+For local testing run any static server, e.g. `python -m http.server` in the
+project folder, then open `http://localhost:8000`.
+
+### Security hardening
+
+- A **Content-Security-Policy** in `index.html` restricts which hosts the
+  browser may load code, styles, images, and data from. If a new external
+  service is added, its host must be added to that policy too.
+- Leaflet is loaded from a pinned version with **subresource integrity**
+  hashes, so a tampered CDN file would be refused.
+- All rule text and URLs coming from the data layer are escaped/validated
+  before rendering, so a compromised or malformed data field cannot inject
+  code into the page.
+- The DAR and State of Hawaiʻi logos are self-hosted under `assets/img/`.
 
 ---
 

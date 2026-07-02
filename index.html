@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Content-Security-Policy: only allow code, styles, and data from the
+       sources this app actually uses. If a new external service is ever
+       added (a new tile server, font host, etc.) it must be added here too,
+       or the browser will block it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' https://unpkg.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://services.arcgis.com; object-src 'none'; base-uri 'self'; form-action 'none'" />
   <title>Hawaiʻi Marine & Freshwater Managed Areas</title>
   <meta name="description" content="Interactive map of Hawaii's managed marine and freshwater areas, maintained by the Division of Aquatic Resources." />
   <meta property="og:title" content="Hawaiʻi Marine & Freshwater Managed Areas" />
@@ -35,7 +40,7 @@
                 <svg class="btn-icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M208.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L137,128ZM57,128l71.52-71.51a12,12,0,0,0-17-17l-80,80a12,12,0,0,0,0,17l80,80a12,12,0,0,0,17-17Z"/></svg>
               </button>
               <img class="brand-logo"
-                   src="https://devdar.rapidteksolutions.com/wp-content/themes/react-ts-theme/assets/img/logo-dar.png"
+                   src="assets/img/logo-dar.png"
                    alt="Division of Aquatic Resources" width="36" height="36" />
             </div>
             <!-- Center: title -->
@@ -45,7 +50,7 @@
             <!-- Right: state seal -->
             <div class="panel-header__brand-right">
               <img class="brand-logo"
-                   src="https://devdar.rapidteksolutions.com/wp-content/themes/react-ts-theme/assets/img/logo-state-of-hawai.png"
+                   src="assets/img/logo-state-of-hawai.png"
                    alt="State of Hawaiʻi" width="36" height="36" />
             </div>
           </div>
@@ -204,6 +209,9 @@
   </template>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="script.js"></script>
+  <!-- App code — split into ES modules under js/, main.js is the entry point.
+       Note: modules require the page to be served over http(s) (GitHub Pages
+       or a local server) — opening index.html directly from disk won't work. -->
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
