@@ -58,6 +58,9 @@ export function getSafeUrl(value) {
 
 export function normalizeHawaiianText(str) {
   if (!str) return '';
+  // Second class deliberately includes the curly quotes ‘ ’ — the data layer
+  // and phone keyboards often use them in place of a true ʻokina, so deleting
+  // them makes "milolii", "miloli‘i", and "miloliʻi" all match the same areas.
   return String(str).toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g,'')
     .replace(/[ʻʼ‘’'`]/g,'')
