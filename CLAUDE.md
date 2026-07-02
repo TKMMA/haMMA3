@@ -2,24 +2,24 @@
 
 ## Workflow
 
-**Claude edits files directly in this folder.** TK reviews diffs in GitHub Desktop, commits, and pushes. Claude never needs to push.
+**Claude edits files, commits locally, and opens pull requests.** TK reviews PRs on GitHub and merges them.
 
 1. **Claude's role:**
    - Edit files to fix bugs, add features, refactor
    - Run `git add` and `git commit` locally (with a sensible message)
-   - **Never run `git push`** — TK owns that step
-   - If a push ever happens by mistake, it's caught by the hook below
+   - Push to a feature branch and create a PR with `gh pr create`
+   - Write a clear PR title and body explaining the change
 
 2. **TK's role:**
-   - Open GitHub Desktop and pull the latest from `origin/main`
-   - Review Claude's commits and diffs
-   - Push to GitHub when satisfied
+   - Review the PR on GitHub (see diffs, read the explanation)
+   - Merge when satisfied, or request changes
+   - That's it — merging auto-closes the PR
 
 3. **Why this works:**
-   - Claude's edits stay local until TK reviews them
-   - TK keeps full control of what lands in the repo
-   - No merge conflicts or accidental force-pushes
-   - Clear audit trail: every commit message shows who did what
+   - Every change goes through a PR (clear review trail on GitHub)
+   - TK has full control: can request changes, comment inline, or merge
+   - Easy to see what changed and why (all in the PR description)
+   - Good practice even for solo projects (audit trail matters)
 
 ## Setup
 
